@@ -6,7 +6,6 @@ import copy
 class Board:
 
     def __init__(self):
-        print("boardCreated")
         self._size = 8
         self._l = [[None for row in range(0, self._size)] for col in range(0, self._size)]
         self._init_board()
