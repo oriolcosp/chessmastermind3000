@@ -1,23 +1,23 @@
-from abc import ABCMeta, abstractmethod
-from . import Static
 import random
 from .Piece import *
 
 
 class Player:
+
     def __init__(self, color):
-        self._color=color
-    def perform_move(self,color): pass
+        self._color = color
+
+    def perform_move(self, color): pass
 
 
 class KeyboardPlayer(Player):
 
-    def __init__(self,color):
+    def __init__(self, color):
         super().__init__(color)
         self._possible_cols = ["A", "B", "C", "D", "E", "F", "G", "H"]
         self._possible_rows = ["1", "2", "3", "4", "5", "6", "7", "8"]
 
-    def perform_move(self,board):
+    def perform_move(self, board):
         no_valid_input = True
         while no_valid_input:
             text = input("Write move (format: e1a4) \n")
@@ -46,6 +46,7 @@ class KeyboardPlayer(Player):
             'G': 6,
             'H': 7,
         }.get(text.upper(), 10)
+
 
 class RandomPlayer(Player):
     def __init__(self, color):

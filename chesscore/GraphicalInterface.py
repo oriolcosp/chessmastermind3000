@@ -1,10 +1,10 @@
 class GraphicalInterface:
 
     def __init__(self, board):
-        self._board=board
+        self._board = board
 
     def draw_board(self, board):
-        self._board=board
+        self._board = board
         print(" -----------------------------------------")
         for i in range(board.size):
             board_line = ""

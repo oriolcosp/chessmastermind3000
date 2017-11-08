@@ -2,6 +2,7 @@ from .Board import *
 from .GraphicalInterface import *
 from .Player import *
 
+
 class Game:
     def __init__(self):
         self._board_log = []
@@ -15,7 +16,6 @@ class Game:
         self._board_log = []
         self._board_log.append(Board())
         self._gui = GraphicalInterface(self._board_log[-1])
-
 
     def play_game(self):
         check_mate = False
@@ -44,9 +44,3 @@ class Game:
         else:
             move = self._white_player.perform_move(self._board_log[-1])
         return move
-
-    def is_check(self):
-        pass
-
-    def is_check_mate(self):
-        return False

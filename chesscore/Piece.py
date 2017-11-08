@@ -12,7 +12,8 @@ class Piece:
         self._row = row
         self._col = col
 
-    # TODO possible_moves es crida amb un boolea "collision", d'aquesta manera amb el mateix mètode fem moviments possibles amb i sense bloqueig
+    # TODO possible_moves es crida amb un boolea "collision", d'aquesta manera amb el mateix mètode
+    # fem moviments possibles amb i sense bloqueig
     # Separar aquí same color i different color per poder desactivar una de les dues
     # Afegir una crida a un mètode abans d'afegir cada move que determini si hi ha escac (moviment ilegal)
     def possible_moves(self, board):
@@ -165,7 +166,7 @@ class Pawn(Piece):
             row += step[0]
             col += step[1]
             if not (row >= board.size or col >= board.size or row < 0 or col < 0):
-                side_piece = board.get_cell(self._row,self._col + step[1])
+                side_piece = board.get_cell(self._row, self._col + step[1])
                 if side_piece and side_piece.id == self.id and side_piece.color != self.color \
                         and side_piece.turn_double_move == board.turnnum - 1:
                     cell = board.get_cell(row, col)
@@ -248,14 +249,14 @@ class King(Piece):
         moves += self._castling_moves(board, rook_col, step)
         return moves
 
-#TODO sembla que no funciona range de mes a menys
+# TODO sembla que no funciona range de mes a menys
     def _castling_moves(self, board, rook_col, step):
         moves = []
         if self.last_turn_moved == -1:
             piece = board.get_cell(self._row, rook_col)
             if piece and piece.id == "R" and piece.last_turn_moved == -1 and piece.color == self.color:
                 impossible_castling = False
-                for col in range (self._col + step , rook_col - step, step):
+                for col in range(self._col + step, rook_col - step, step):
                     if board.get_cell(self._row, col):
                         impossible_castling = True
                     if impossible_castling:
@@ -351,17 +352,17 @@ class Move:
         return self._piece
     
     @property
-    def erow (self):
+    def erow(self):
         return self._erow
 
     @property
-    def ecol (self):
+    def ecol(self):
         return self._ecol
 
     @property
-    def srow (self):
+    def srow(self):
         return self._srow
 
     @property
-    def scol (self):
+    def scol(self):
         return self._scol

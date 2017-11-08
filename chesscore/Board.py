@@ -1,4 +1,3 @@
-from chesscore.Static import *
 from chesscore.Piece import *
 import copy
 
@@ -30,10 +29,10 @@ class Board:
         self._l[0][2] = Bishop(Color.BLACK, 0, 2)
         self._l[0][self._size - 3] = Bishop(Color.BLACK, 0, self._size - 3)
         self._l[self._size - 1][2] = Bishop(Color.WHITE, self._size - 1, 2)
-        self._l[self._size - 1][self._size - 3] = Bishop(Color.WHITE, self._size - 1,self._size - 3)
-      #  self._l[0][3] = King(Color.BLACK, 0, 3)
+        self._l[self._size - 1][self._size - 3] = Bishop(Color.WHITE, self._size - 1, self._size - 3)
+        #  self._l[0][3] = King(Color.BLACK, 0, 3)
         self._l[0][self._size - 4] = Queen(Color.BLACK, 0, self._size - 4)
-     #   self._l[self._size - 1][3] = King(Color.WHITE, self._size - 1, 3)
+        #   self._l[self._size - 1][3] = King(Color.WHITE, self._size - 1, 3)
         self._l[self._size - 1][self._size - 4] = Queen(Color.WHITE, self._size - 1, self._size - 4)
         
     def get_cell(self, row, col):
@@ -54,7 +53,7 @@ class Board:
                         moves += piece_move
         return moves
 
-#TODO Transform pawn into queen if it reaches the end
+# TODO Transform pawn into queen if it reaches the end
     def move(self, move):
         board = copy.deepcopy(self)
         piece = board.get_cell(move.srow, move.scol)
@@ -86,7 +85,6 @@ class Board:
     def is_check(self, color):
         king_row = -1
         king_col = -1
-        is_check = False
         king_found = False
         for row in range(self._size):
             for col in range(self._size):
@@ -98,7 +96,7 @@ class Board:
                     break
             if king_found:
                 break
-        is_check = self.is_cell_menaced(king_row, king_col,color)
+        is_check = self.is_cell_menaced(king_row, king_col, color)
         return is_check
 
     def is_cell_menaced(self, menaced_row, menaced_col, color):
@@ -117,8 +115,8 @@ class Board:
     def is_check_mate(self):
         no_legal_moves = True
         for move in self.get_all_moves():
-             board = self.move(move)
-             if board:
+            board = self.move(move)
+            if board:
                 no_legal_moves = False
                 break
         if no_legal_moves:
@@ -167,7 +165,8 @@ class Board:
     def size(self, size):
         self._size = size
 
-#TODO test captura al pas, enroque
+
+# TODO test captura al pas, enroque
 class TestBoard(Board):
     def __init__(self):
         super().__init__()
@@ -176,5 +175,3 @@ class TestBoard(Board):
         self._l[7][0] = King(Color.BLACK, 7, 0)
         self._l[0][1] = Rook(Color.WHITE, 0, 1)
         self._l[6][6] = Rook(Color.WHITE, 6, 6)
-
-
