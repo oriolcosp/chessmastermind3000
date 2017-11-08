@@ -54,7 +54,6 @@ class Board:
                         moves += piece_move
         return moves
 
-# TODO Transform pawn into queen if it reaches the end
     def move(self, move):
         board = copy.deepcopy(self)
         piece = board.get_cell(move.srow, move.scol)
@@ -75,6 +74,18 @@ class Board:
             return board
         else:
             return None
+
+    def move_no_check_valid(self, move):
+        board = copy.deepcopy(self)
+        piece = board.get_cell(move.srow, move.scol)
+        piece.update_status(board, move)
+        piece.update_board_positions(board, move)
+        board.add_turn()
+        if self._turn == Color.BLACK:
+            board.turn = Color.WHITE
+        else:
+            board.turn = Color.BLACK
+        return board
 
     def is_legal_board(self):
         if self._turn == Color.BLACK:
@@ -167,12 +178,28 @@ class Board:
         self._size = size
 
 
-# TODO test captura al pas, enroque
 class TestBoard(Board):
     def __init__(self):
         super().__init__()
 
     def _init_board(self):
-        self._l[7][0] = King(Color.BLACK, 7, 0)
-        self._l[0][1] = Rook(Color.WHITE, 0, 1)
-        self._l[6][6] = Rook(Color.WHITE, 6, 6)
+        for i in range(self._size):
+            self._l[1][i] = Pawn(Color.BLACK, 1, i)
+            self._l[self._size - 2][i] = Pawn(Color.WHITE, self._size - 2, i)
+        self._l[0][0] = Rook(Color.BLACK, 0, 0)
+        self._l[0][self._size - 1] = Rook(Color.BLACK, 0, self._size - 1)
+        self._l[self._size - 1][0] = Rook(Color.WHITE, self._size - 1, 0)
+        self._l[self._size - 1][self._size - 1] = Rook(Color.WHITE, self._size - 1, self._size - 1)
+        self._l[0][1] = Knight(Color.BLACK, 0, 1)
+        self._l[0][self._size - 2] = Knight(Color.BLACK, 0, self._size - 2)
+        self._l[self._size - 1][1] = Knight(Color.WHITE, self._size - 1, 1)
+        self._l[self._size - 1][self._size - 2] = Knight(Color.WHITE, self._size - 1, self._size - 2)
+        self._l[0][2] = Bishop(Color.BLACK, 0, 2)
+        self._l[0][self._size - 3] = Bishop(Color.BLACK, 0, self._size - 3)
+        self._l[4][5] = Bishop(Color.WHITE, 4, 5)
+        self._l[self._size - 1][self._size - 3] = Bishop(Color.WHITE, self._size - 1, self._size - 3)
+        self._l[0][3] = King(Color.BLACK, 0, 3)
+        self._l[0][self._size - 4] = Queen(Color.BLACK, 0, self._size - 4)
+        self._l[self._size - 1][3] = King(Color.WHITE, self._size - 1, 3)
+        self._l[3][0] = Queen(Color.WHITE,3 ,0 )
+

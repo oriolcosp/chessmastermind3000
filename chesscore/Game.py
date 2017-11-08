@@ -7,10 +7,10 @@ class Game:
     def __init__(self):
         self._board_log = []
         self._move_log = []
-        self._board_log.append(Board())
+        self._board_log.append(TestBoard())
         self._gui = GraphicalInterface(self._board_log[-1])
-        self._black_player = RandomPlayer(Color.BLACK)
-        self._white_player = KeyboardPlayer(Color.WHITE)
+        self._white_player = AIMinimaxPlayer(Color.WHITE)
+        self._black_player = KeyboardPlayer(Color.BLACK)
 
     def reset_game(self):
         self._board_log = []
@@ -35,9 +35,8 @@ class Game:
             check_mate = self._board_log[-1].is_check_mate()
             stale_mate = self._board_log[-1].is_stale_mate()
             self._gui.draw_board(self._board_log[-1])
-        self._gui.end_game(check_mate, stale_mate)
+        self._gui.end_game(board, stale_mate)
 
-    # TODO Implement players
     def next_move(self):
         if self._board_log[-1].turn == Color.BLACK:
             move = self._black_player.perform_move(self._board_log[-1])

@@ -1,3 +1,7 @@
+from .Static import *
+
+
+# TODO Implement real graphical interface. Then implement mouse players with screen interaction
 class GraphicalInterface:
 
     def __init__(self, board):
@@ -11,8 +15,8 @@ class GraphicalInterface:
             board_line = ""
             board_line += str(board.size-i) + "| "
             for j in range(board.size):
-                if board.l[i][j]:
-                    board_line += str(board.l[i][j]) + " "
+                if board.get_cell(i, j):
+                    board_line += str(board.get_cell(i, j)) + " "
                 else:
                     board_line += "   "
                 board_line += "| "
@@ -21,8 +25,10 @@ class GraphicalInterface:
         print("    A    B    C    D    E    F    G    H")
         print(board.turn)
 
-    def end_game(self, victory, draw):
-        if victory:
-            print("Game with victory!")
+    def end_game(self, board, draw):
         if draw:
             print("Game finished with draw")
+        elif board.turn == Color.WHITE:
+            print("Black Player Wins!")
+        else:
+            print("White Player Wins!")
