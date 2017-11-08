@@ -13,6 +13,8 @@ class Board:
         self._turn = Color.WHITE
         self._turnnum = 1
         self._sprite = "BoardPicture"
+        self._check_mate = False
+        self._stale_mate = False
 
     def _init_board(self):
         for i in range(self._size):
@@ -57,6 +59,12 @@ class Board:
     def move(self, move):
         board = copy.deepcopy(self)
         piece = board.get_cell(move.srow, move.scol)
+        if not piece:
+            return None
+        if piece.color != board.turn:
+            return None
+        if move not in piece.possible_moves(board):
+            return None
         piece.update_status(board, move)
         piece.update_board_positions(board, move)
         board.add_turn()
@@ -107,6 +115,28 @@ class Board:
                 break
         return is_menaced
 
+    def is_check_mate(self):
+        no_legal_moves = True
+        for move in self.get_all_moves():
+             board = self.move(move)
+             if board:
+                no_legal_moves = False
+                break
+        if no_legal_moves:
+            if self.is_check(self._turn):
+                self._check_mate = True
+                self._stale_mate = False
+            else:
+                self._check_mate = False
+                self._stale_mate = True
+        else:
+            self._check_mate = False
+            self._stale_mate = False
+        return self._check_mate
+
+    def is_stale_mate(self):
+        return self._stale_mate
+
     @property
     def l(self):
         return self._l
@@ -144,11 +174,8 @@ class TestBoard(Board):
         super().__init__()
 
     def _init_board(self):
-        self._l[7][3] = King(Color.WHITE, 7, 3)
-        self._l[7][0] = Rook(Color.WHITE, 7, 0)
-        self._l[7][7] = Rook(Color.WHITE, 7, 7)
-        self._l[6][7] = Pawn(Color.WHITE, 6, 7)
-        self._l[6][0] = Pawn(Color.WHITE, 6, 0)
-        self._l[5][2] = Bishop(Color.BLACK, 5, 2)
-        self._l[5][6] = Pawn(Color.BLACK, 5, 6)
+        self._l[7][0] = King(Color.BLACK, 7, 0)
+        self._l[0][1] = Rook(Color.WHITE, 0, 1)
+        self._l[6][6] = Rook(Color.WHITE, 6, 6)
+
 

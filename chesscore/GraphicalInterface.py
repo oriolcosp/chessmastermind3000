@@ -20,5 +20,8 @@ class GraphicalInterface:
         print("    A    B    C    D    E    F    G    H")
         print(str(board.turn))
 
-    def end_game(self):
-        print("Game Finished")
+    def end_game(self, victory, draw):
+        if victory:
+            print("Game with victory!")
+        if draw:
+            print("Game finished with draw")
