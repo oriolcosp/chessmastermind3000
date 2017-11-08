@@ -32,9 +32,9 @@ class Board:
         self._l[0][self._size - 3] = Bishop(Color.BLACK, 0, self._size - 3)
         self._l[self._size - 1][2] = Bishop(Color.WHITE, self._size - 1, 2)
         self._l[self._size - 1][self._size - 3] = Bishop(Color.WHITE, self._size - 1,self._size - 3)
-        self._l[0][3] = King(Color.BLACK, 0, 3)
+      #  self._l[0][3] = King(Color.BLACK, 0, 3)
         self._l[0][self._size - 4] = Queen(Color.BLACK, 0, self._size - 4)
-        self._l[self._size - 1][3] = King(Color.WHITE, self._size - 1, 3)
+     #   self._l[self._size - 1][3] = King(Color.WHITE, self._size - 1, 3)
         self._l[self._size - 1][self._size - 4] = Queen(Color.WHITE, self._size - 1, self._size - 4)
         
     def get_cell(self, row, col):

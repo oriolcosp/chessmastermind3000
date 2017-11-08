@@ -93,7 +93,7 @@ class Pawn(Piece):
         super().__init__(color, row, col)
         self._value = 1
         self._sprite = "P"
-        self._turn_double_move = 1
+        self._turn_double_move = -1
         self._turn_ip_move = -1
         if color == Color.BLACK:
             self._steps = [[1, 0]]
@@ -104,6 +104,9 @@ class Pawn(Piece):
             self._capture_steps = [[-1, -1], [-1, 1]]
             self._double_step = [-2, 0]
 
+    @property
+    def turn_double_move(self):
+        return self._turn_double_move
     # TODO Override method with pawn movement. Care with: atac de peó, peó passat, captura al pas,
     # final de taula peó, salt doble al principi
 
@@ -164,7 +167,7 @@ class Pawn(Piece):
             if not (row >= board.size or col >= board.size or row < 0 or col < 0):
                 side_piece = board.get_cell(self._row,self._col + step[1])
                 if side_piece and side_piece.id == self.id and side_piece.color != self.color \
-                        and side_piece.last_turn_double_move == board.turnnum - 1:
+                        and side_piece.turn_double_move == board.turnnum - 1:
                     cell = board.get_cell(row, col)
                     if not cell:
                         moves.append(Move(self, self._row, self._col, row, col))
