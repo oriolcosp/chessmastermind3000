@@ -21,11 +21,8 @@ class KeyboardPlayer(Player):
         no_valid_input = True
         while no_valid_input:
             text = input("Write move (format: e1a4) \n")
-            print(text)
-            print(text[0])
-            print(self._possible_cols)
-            if text[0].upper() in self._possible_cols and text[2].upper() in self._possible_cols:
-                if text[1] in self._possible_rows and text[3] in self._possible_rows:
+            if text[0].upper() in self._possible_cols and text[2].upper() in self._possible_cols and text[1] \
+                    in self._possible_rows and text[3] in self._possible_rows:
                     no_valid_input = False
             else:
                 print("Input not valid")
@@ -55,9 +52,10 @@ class RandomPlayer(Player):
     def perform_move(self, board):
         moves = board.get_all_moves()
         print(moves)
+        # print(moves)
         move = random.choice(moves)
-        print(move)
+        # print(move)
         if not moves:
             print("No possible Moves!")
-        input("Continue")
+        # input("Continue")
         return move

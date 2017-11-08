@@ -1,5 +1,6 @@
 from chesscore.Piece import *
 import copy
+from .Static import Color
 
 
 class Board:
@@ -30,9 +31,9 @@ class Board:
         self._l[0][self._size - 3] = Bishop(Color.BLACK, 0, self._size - 3)
         self._l[self._size - 1][2] = Bishop(Color.WHITE, self._size - 1, 2)
         self._l[self._size - 1][self._size - 3] = Bishop(Color.WHITE, self._size - 1, self._size - 3)
-        #  self._l[0][3] = King(Color.BLACK, 0, 3)
+        self._l[0][3] = King(Color.BLACK, 0, 3)
         self._l[0][self._size - 4] = Queen(Color.BLACK, 0, self._size - 4)
-        #   self._l[self._size - 1][3] = King(Color.WHITE, self._size - 1, 3)
+        self._l[self._size - 1][3] = King(Color.WHITE, self._size - 1, 3)
         self._l[self._size - 1][self._size - 4] = Queen(Color.WHITE, self._size - 1, self._size - 4)
         
     def get_cell(self, row, col):
@@ -104,7 +105,7 @@ class Board:
         for row in range(self._size):
             for col in range(self._size):
                 piece = self._l[row][col]
-                if piece and piece.color != color:
+                if piece and piece.color != color and not (menaced_row == row and menaced_col == col):
                     if piece.is_menacing_cell(menaced_row, menaced_col, self):
                         is_menaced = True
                         break

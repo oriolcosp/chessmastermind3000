@@ -9,7 +9,7 @@ class Game:
         self._move_log = []
         self._board_log.append(Board())
         self._gui = GraphicalInterface(self._board_log[-1])
-        self._black_player = KeyboardPlayer(Color.BLACK)
+        self._black_player = RandomPlayer(Color.BLACK)
         self._white_player = KeyboardPlayer(Color.WHITE)
 
     def reset_game(self):

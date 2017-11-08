@@ -3,6 +3,7 @@ class GraphicalInterface:
     def __init__(self, board):
         self._board = board
 
+    # TODO Correctly represent Turn color. Right now we are not getting correct string from print(board.turn)
     def draw_board(self, board):
         self._board = board
         print(" -----------------------------------------")
@@ -18,7 +19,7 @@ class GraphicalInterface:
             print(board_line)
             print(" -----------------------------------------")
         print("    A    B    C    D    E    F    G    H")
-        print(str(board.turn))
+        print(board.turn)
 
     def end_game(self, victory, draw):
         if victory:

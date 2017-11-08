@@ -212,11 +212,20 @@ class King(Piece):
         self._sprite = "G"
         self._steps = [[-1, 1], [1, 1], [-1, -1], [1, -1], [-1, 0], [1, 0], [0, -1], [0, 1]]
 
+    # Method must be overwritten to not check castling moves. Checking them causes infinite recursion
+    def is_menacing_cell(self, row, col, board):
+        move = Move(self, self._row, self._col, row, col)
+        moves = self._normal_moves(board)
+        if move in moves:
+            return True
+        else:
+            return False
+
     def possible_moves(self, board):
         moves = []
         moves += self._normal_moves(board)
-        moves += self._left_castling(board)
         moves += self._right_castling(board)
+        moves += self._left_castling(board)
         return moves
 
     def _normal_moves(self, board):
