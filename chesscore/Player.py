@@ -66,17 +66,72 @@ class AIMinimaxPlayer(Player):
 
     def __init__(self, color):
         super().__init__(color)
-        self._max_depth = 1
+        self._max_depth = 2
         self._depth = 0
+        self._turn = -1
+
+        self._is_game_over_num = 0
+        self._is_game_over_max = 0
+        self._is_game_over_min = 0
+    
+        self._next_state_num = 0
+        self._next_state_max = 0
+        self._next_state_min = 0
+    
+        self._available_moves_num = 0
+        self._available_moves_max = 0
+        self._available_moves_min = 0
+
+        self._next_node_num = 0
+        self._next_node_max = 0
+        self._next_node_min = 0
 
     #TODO set timestamps to check performance and spot bottlenecks
     def perform_move(self, board):
         self._depth = 0
         self._turn = board.turnnum
         start_time = time.time()
+
+        self._is_game_over_num = 0
+        self._is_game_over_max = 0
+        self._is_game_over_min = 0
+
+        self._next_state_num = 0
+        self._next_state_max = 0
+        self._next_state_min = 0
+
+        self._available_moves_num = 0
+        self._available_moves_max = 0
+        self._available_moves_min = 0
+
+        self._next_node_num = 0
+        self._next_node_max = 0
+        self._next_node_min = 0
+
         move = self._minimax(board)
+
+        print("Next Node max: " + str(self._next_node_max))
+        print("Next Node min: " + str(self._next_node_min))
+        print("Next Node avg: " + str((self._next_node_max+self._next_node_min)/2))
+        print("Next Node num: " + str(self._next_node_num))
+        
+        print("Is Game Over max: " + str(self._is_game_over_max))
+        print("Is Game Over min: " + str(self._is_game_over_min))
+        print("Is Game Over avg: " + str((self._is_game_over_max + self._is_game_over_min) / 2))
+        print("Is Game Over num: " + str(self._is_game_over_num))
+        
+        print("Available Moves max: " + str(self._available_moves_max))
+        print("Available Moves min: " + str(self._available_moves_min))
+        print("Available Moves avg: " + str((self._available_moves_max + self._available_moves_min) / 2))
+        print("Available Moves num: " + str(self._available_moves_num))
+        
+        print("Next state max: " + str(self._next_state_max))
+        print("Next state min: " + str(self._next_state_min))
+        print("Next state avg: " + str((self._next_state_max + self._next_state_min) / 2))
+        print("Next state num: " + str(self._next_state_num))
+        
         print("Number of steps: " + str(self._depth))
-        print("Time taken: "+ str((time.time() - start_time)))
+        print("Time taken: " + str((time.time() - start_time)))
         return move[0]
 
     def _minimax(self, board):
@@ -90,25 +145,62 @@ class AIMinimaxPlayer(Player):
         self._depth += 1
         if game_over != 0 or self._max_depth < board.turnnum - self._turn:
             return self._evaluate(board, game_over)
-        return min(
+        start_time = time.time()
+        node = min(
             map(lambda move: self._max_play(self._next_state(board, move)),
                 self._get_available_moves(board)))
+        ttime = time.time() - start_time
+        if not 0 < self._next_node_min < ttime :
+            self._next_node_min = ttime
+        if ttime > self._next_node_max:
+            self._next_node_max = ttime
+        self._next_node_num += 1
+        print("Next Node: " + str(ttime))
+        return node
 
     def _max_play(self, board):
+        start_time = time.time()
         game_over = self._is_game_over(board)
         self._depth += 1
         if game_over != 0 or self._max_depth < board.turnnum - self._turn:
             return self._evaluate(board, game_over)
-        return max(
+        node = max(
             map(lambda move: self._min_play(self._next_state(board, move)),
                 self._get_available_moves(board)))
 
+        ttime = time.time() - start_time
+        if not 0 < self._next_node_min < ttime:
+            self._next_node_min = ttime
+        if ttime > self._next_node_max:
+            self._next_node_max = ttime
+        self._next_node_num += 1
+        print("Next Node: " + str(ttime))
+        return node
+
     def _next_state(self, board, move):
-        return board.move_no_check_valid(move)
+        start_time = time.time()
+        board = board.move_no_check_valid(move)
+        ttime = time.time() - start_time
+        if not 0 < self._next_state_min < 0:
+            self._next_state_min = ttime
+        if ttime > self._next_state_max:
+            self._next_state_max = ttime
+        self._next_state_num += 1
+        print("Next State: " + str(ttime))
+        return board
 
     # Returns 1 if this player wins, -1 if this player loses and 0 if game is not over
     def _is_game_over(self, board):
-        if board.is_check_mate():
+        start_time = time.time()
+        check_mate = board.is_check_mate()
+        ttime = time.time() - start_time
+        if not 0 < self._is_game_over_min < ttime:
+            self._is_game_over_min = ttime
+        if ttime > self._is_game_over_max:
+            self._is_game_over_max = ttime
+        self._is_game_over_num += 1
+        print("Is Game Over: " + str(ttime))
+        if check_mate:
             if board.turn == self._color:
                 return -1
             else:
@@ -117,11 +209,19 @@ class AIMinimaxPlayer(Player):
             return 0
 
     def _get_available_moves(self, board):
+        start_time = time.time()
         moves = board.get_all_moves()
         valid_moves = []
         for move in moves:
             if board.move(move):
                 valid_moves.append(move)
+        ttime = time.time() - start_time
+        if not 0 < self._available_moves_min < ttime:
+            self._available_moves_min = ttime
+        if ttime > self._available_moves_max:
+            self._available_moves_max = ttime
+        self._available_moves_num += 1
+        print("Available Moves: " + str(ttime))
         return valid_moves
 
     # Gameover is 1 if this player wins, -1 if this player loses and 0 if game is not
