@@ -3,3 +3,6 @@ tres_en_ralla/data/
 tres_en_ralla/__pycache__/
 AI/Misc/chess_games/
 AI/Misc/pgn_files/
+.DS_Store
+.idea/
+
