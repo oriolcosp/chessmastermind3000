@@ -108,8 +108,6 @@ class Pawn(Piece):
     @property
     def turn_double_move(self):
         return self._turn_double_move
-    # TODO Override method with pawn movement. Care with: atac de peó, peó passat, captura al pas,
-    # final de taula peó, salt doble al principi
 
     def possible_moves(self, board):
         moves = []
@@ -258,7 +256,6 @@ class King(Piece):
         moves += self._castling_moves(board, rook_col, step)
         return moves
 
-# TODO sembla que no funciona range de mes a menys
     def _castling_moves(self, board, rook_col, step):
         moves = []
         if self.last_turn_moved == -1:
@@ -302,7 +299,6 @@ class Knight(Piece):
         self._sprite = "K"
         self._steps = [[-2, 1], [-2, -1], [2, -1], [2, 1], [-1, 2], [-1, -2], [1, -2], [1, 2]]
 
-    # TODO Afegir enroque
     def possible_moves(self, board):
         moves = []
         for step in self._steps:
