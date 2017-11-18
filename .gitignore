@@ -8,3 +8,4 @@ AI/Misc/strategic_test_suite/
 AI/Misc/pgn_files/
 .DS_Store
 .idea/
+*.pyc

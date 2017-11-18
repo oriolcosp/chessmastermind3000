@@ -1,15 +1,20 @@
-import random
-from .Piece import *
+import sys
+import os
+
+sys.path.append( os.path.join( os.path.join(os.path.dirname(__file__), '..'), '..'))
+from chesscore.Piece import *
+from chesscore.Board import *
+from chesscore.Player import Player
+
 import time
-from Player import Player
 import numpy as np
 from keras.models import load_model
-from utils import weighted_choice
+from AI.utils import weighted_choice
 
-class RandomPlayer(Player):
+class value_ann_player(Player):
     def __init__(self, color, filename):
         super().__init__(color)
-        self.model = load_model(filename)
+        # self.model = load_model(filename)
 
     def perform_move(self, board):
         moves = board.get_all_moves()
@@ -24,6 +29,7 @@ class RandomPlayer(Player):
 
     def ev_ann(self, board, color):
         # xx
+        return( np.random.rand() )
         codi_vanessa
         # transform
         num_pixels = X_train.shape[1] * X_train.shape[2] * X_train.shape[3]
@@ -32,8 +38,10 @@ class RandomPlayer(Player):
         # evaluate
         prediction = self.model.predict( X_train )
 
-        color!!
+        # color!!
         score = prediction[0][ player + 1 ] + 0.1 * prediction[0][1]
 
         return( score )
+
+
 

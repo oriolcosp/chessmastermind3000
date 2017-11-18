@@ -1,4 +1,3 @@
-from tres_en_ralla import weighted_choice
 
 def weighted_choice(choices):
    total = sum(w for c, w in choices.items())
