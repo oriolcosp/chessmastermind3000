@@ -16,17 +16,6 @@ class value_ann_player(Player):
         super().__init__(color)
         # self.model = load_model(filename)
 
-    def perform_move(self, board):
-        moves = board.get_all_moves()
-        scores = np.zeros( len(monves) )
-        i = 0
-        for m in moves:
-            board_m = board.move_no_check_valid(move)
-            scores[i] = ev_ann(board, self._color)
-            i += 1
-        x = weighted_choice( scores )
-        return( moves[x] )
-
     def ev_ann(self, board, color):
         # xx
         return( np.random.rand() )
@@ -43,5 +32,15 @@ class value_ann_player(Player):
 
         return( score )
 
-
+    def perform_move(self, board):
+        moves = board.get_all_moves()
+        scores ={}
+        i = 0
+        for m in moves:
+            board_m = board.move_no_check_valid(m)
+            scores[i] = self.ev_ann(board, self._color)
+            i += 1
+        print( scores )
+        x = weighted_choice( scores )
+        return( moves[x] )
 

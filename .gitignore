@@ -9,3 +9,4 @@ AI/Misc/pgn_files/
 .DS_Store
 .idea/
 *.pyc
+random_py.py

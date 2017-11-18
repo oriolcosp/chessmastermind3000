@@ -11,7 +11,7 @@ def mcts_write(taulell, player, turn):
         return dic[ tup ]
 
     s = None
-    w = getWinner(taulell) 
+    w = getWinner(taulell)
     if w == player:
         s = 1
     if w == -player:

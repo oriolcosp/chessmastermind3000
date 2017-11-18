@@ -1,6 +1,7 @@
+from random import uniform
 
 def weighted_choice(choices):
-   total = sum(w for c, w in choices.items())
+   total = sum( w for c, w in choices.items() )
    r = uniform(0, total)
    upto = 0
    for c, w in choices.items():
