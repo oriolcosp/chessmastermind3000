@@ -5,3 +5,6 @@ AI/Misc/chess_games/
 AI/Misc/chess_games2/
 AI/Misc/pgn_files/
 AI/Misc/strategic_test_suite/
+AI/Misc/pgn_files/
+.DS_Store
+.idea/
