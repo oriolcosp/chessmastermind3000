@@ -4,17 +4,18 @@ from .Player import *
 
 
 class Game:
-    def __init__(self):
+    def __init__(self, white_player, black_player):
         self._board_log = []
         self._move_log = []
         self._board_log.append(TestBoard())
         self._gui = GraphicalInterface(self._board_log[-1])
-        self._white_player = AIMinimaxPlayer(Color.WHITE)
-        self._black_player = KeyboardPlayer(Color.BLACK)
+        self._white_player = white_player
+        self._black_player = black_player
+
 
     def reset_game(self):
         self._board_log = []
-        self._board_log.append(Board())
+        self._board_log.append(TestBoard())
         self._gui = GraphicalInterface(self._board_log[-1])
 
     def play_game(self):
