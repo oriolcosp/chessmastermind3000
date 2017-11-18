@@ -2,4 +2,6 @@ local/
 tres_en_ralla/data/
 tres_en_ralla/__pycache__/
 AI/Misc/chess_games/
+AI/Misc/chess_games2/
 AI/Misc/pgn_files/
+AI/Misc/strategic_test_suite/

@@ -21,14 +21,19 @@ def get_coords(move):
     return( x0, y0, x1, y1 )
 
 
-def pgn_to_np(filename, prefix):
+def pgn_to_np(filename, prefix, freq, endings):
     pgn = open(filename)
 
     bo = True
     i = 0
+    k = 0
     boards = []
     results = []
     turns = []
+
+    boards_end = []
+    results_end = []
+    turns_end = []
 
     board = [ [b'wr', b'wn', b'wb', b'wq', b'wk', b'wb', b'wn', b'wr'],
         [b'wp', b'wp', b'wp', b'wp', b'wp', b'wp', b'wp', b'wp'],
@@ -41,13 +46,18 @@ def pgn_to_np(filename, prefix):
 
     while( bo ):
         i += 1
-        if i % 5000 == 0:
-            # Guarda el progres, inicialitza variables
-            save_file( prefix + str(i) + '.h5', boards, results, turns )
 
-            boards = []
-            results = []
-            turns = []
+        if i > 1 and endings:
+            boards_end = boards_end + [ copy.deepcopy(brd) ]
+            results_end = results_end + [ winner ]
+            turns_end = turns_end + [ b'b' if j % 2 == 1 else b'w' ]
+
+            if i % 50000 == 0:
+                save_file( prefix + 'end_' + str(i) + '.h5', boards_end, results_end, turns_end )
+
+                boards_end = []
+                results_end = []
+                turns_end = []
 
         try:
             next_game = chess.pgn.read_game(pgn)
@@ -62,23 +72,56 @@ def pgn_to_np(filename, prefix):
         mvs = next_game.main_line()
         j = 0
         for m in mvs:
-            # if j > 3:
+            # if k > 300:
             #     bo = False
+            #     print( turns )
             #     break
             j += 1
+            k += 1
 
             x0, y0, x1, y1 = get_coords( str( m ) ) 
 
             brd[x1][y1] = brd[x0][y0]
             brd[x0][y0] = b''
 
-            boards = boards + [ copy.deepcopy(brd) ]
-            results = results + [ winner ]
-            turns = turns + [ b'b' if j % 2 == 1 else b'w' ]
+            if k % freq == 0:
+                boards = boards + [ copy.deepcopy(brd) ]
+                results = results + [ winner ]
+                turns = turns + [ b'b' if j % 2 == 1 else b'w' ]
+                if k % (freq*5000*40) == 0:
+                    # Guarda el progres, inicialitza variables
+                    save_file( prefix + str(k) + '.h5', boards, results, turns )
+
+                    boards = []
+                    results = []
+                    turns = []
+
     # print( np.array(boards) )
     # Guarda el progres
-    save_file( prefix + str(i) + '.h5', boards, results, turns )
+    save_file( prefix + str(k) + '.h5', boards, results, turns )
+    save_file( prefix + 'end_' + str(i) + '.h5', boards_end, results_end, turns_end )
 
-pgn_to_np( 'pgn_files/fics_2015.pgn', 'chess_games/fics_2015_' )
-pgn_to_np( 'pgn_files/fics_2015.pgn', 'chess_games/fics_2016_' )
+def count_games(filename):
+    pgn = open(filename)
 
+    bo = True
+    i = 0
+    j = 0
+    games = set()
+
+    while( bo ):
+        i += 1
+        if (i % 10000 == 0):
+            print( i )
+        try:
+            next_game = chess.pgn.read_game(pgn)
+            if next_game.headers['FICSGamesDBGameNo'] in games:
+                break
+            else:
+                games.add( next_game.headers['FICSGamesDBGameNo'] )
+        except:
+            break
+    print( i )
+
+pgn_to_np( 'pgn_files/fics_2016.pgn', 'chess_games2/fics_2016_', 5, True )
+pgn_to_np( 'pgn_files/fics_2015.pgn', 'chess_games2/fics_2015_', 5, True )
