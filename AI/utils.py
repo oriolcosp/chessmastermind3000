@@ -9,3 +9,4 @@ def weighted_choice(choices):
          return c
       upto += w
    assert False, "Shouldn't get here"
+
